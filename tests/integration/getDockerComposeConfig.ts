@@ -1,4 +1,4 @@
-import { execCommand } from './execCommand';
+import { execCommand } from '../utils/execCommand';
 
 export const getDockerComposeConfig = (env: NodeJS.ProcessEnv) => {
   const cmdStr = `make docker-config FORMAT=json`;

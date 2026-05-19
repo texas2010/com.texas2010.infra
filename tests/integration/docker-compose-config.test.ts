@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { getDockerComposeConfig } from '../utils/getDockerComposeConfig';
+import { getDockerComposeConfig } from './getDockerComposeConfig';
 import { execCommand } from '../utils/execCommand';
 
 const repoName = 'com-texas2010-infra-';

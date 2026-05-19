@@ -3,10 +3,24 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     globals: true,
-    include: ['tests/**/*.test.ts'],
-    setupFiles: ['./tests/setups/vitest-global-setup.ts'],
-    testTimeout: 120_000,
-    hookTimeout: 120_000,
     isolate: false,
+
+    projects: [
+      {
+        test: {
+          name: 'integration',
+          include: ['tests/integration/**/*.test.ts'],
+        },
+      },
+      {
+        test: {
+          name: 'e2e',
+          include: ['tests/e2e/**/*.test.ts'],
+          globalSetup: ['./tests/e2e/global/setup.ts'],
+          testTimeout: 120_000,
+          hookTimeout: 120_000,
+        },
+      },
+    ],
   },
 });
