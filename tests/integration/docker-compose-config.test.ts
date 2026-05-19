@@ -4,11 +4,17 @@ import { execCommand } from '../utils/execCommand';
 
 const repoName = 'com-texas2010-infra-';
 
+const testEnv = {
+  ...process.env,
+  SKIP_ENV_FILE_CHECK: 'true',
+};
+
 describe('Docker Compose Config', () => {
   describe('Output Modes', () => {
     test('docker config JSON mode should return valid JSON', () => {
       const result = execCommand(
-        'make docker-config INFRA_LOCATION=home DEPLOY_ENV=dev FORMAT=json'
+        'make docker-config INFRA_LOCATION=home DEPLOY_ENV=dev FORMAT=json',
+        { env: testEnv }
       );
 
       expect(result.ok).toBe(true);
@@ -22,7 +28,8 @@ describe('Docker Compose Config', () => {
 
     test('docker config normal mode should include human output', () => {
       const result = execCommand(
-        'make docker-config INFRA_LOCATION=home DEPLOY_ENV=dev'
+        'make docker-config INFRA_LOCATION=home DEPLOY_ENV=dev',
+        { env: testEnv }
       );
 
       expect(result.ok).toBe(true);
@@ -36,7 +43,8 @@ describe('Docker Compose Config', () => {
 
     test('docker config should fail with invalid format', () => {
       const result = execCommand(
-        'make docker-config INFRA_LOCATION=home DEPLOY_ENV=dev FORMAT=xml'
+        'make docker-config INFRA_LOCATION=home DEPLOY_ENV=dev FORMAT=xml',
+        { env: testEnv }
       );
 
       expect(result.ok).toBe(false);
