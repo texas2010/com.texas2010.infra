@@ -97,7 +97,7 @@ fi
 full_project_name="${REPO_NAME}-${INFRA_LOCATION}-${DEPLOY_ENV}"
 env_file=".env.${INFRA_LOCATION}.${DEPLOY_ENV}"
 
-if [ ! -f "$env_file" ] && [ "$DEPLOY_ENV" != "test" ]; then
+if [ "${SKIP_ENV_FILE_CHECK:-false}" != "true" ] && [ ! -f "$env_file" ]; then
   docker_error "Missing env file: $env_file"
   exit 1
 fi

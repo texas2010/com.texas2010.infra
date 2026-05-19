@@ -6,6 +6,7 @@ export const getDockerComposeConfig = (env: NodeJS.ProcessEnv) => {
     env: {
       ...process.env,
       ...env,
+      SKIP_ENV_FILE_CHECK: 'true',
     },
   });
 
