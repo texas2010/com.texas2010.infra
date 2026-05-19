@@ -1,19 +1,14 @@
-import { describe, afterAll, beforeAll, expect, test } from 'vitest';
-import { startHomeDockerCompose } from './../../global/home-docker-compose';
-
-let home: Awaited<ReturnType<typeof startHomeDockerCompose>>;
-
-beforeAll(async () => {
-  home = await startHomeDockerCompose();
-});
-
-afterAll(async () => {
-  await home?.environment.down();
-});
+import { describe, expect, inject, test } from 'vitest';
 
 describe('Route ping', () => {
   test('GET /ping', async () => {
-    const response = await fetch(`${home.baseUrl}/ping`);
+    const homeBaseUrl = inject('homeBaseUrl');
+    console.log('homeBaseUrl', homeBaseUrl);
+
+    const cloudBaseUrl = inject('cloudBaseUrl');
+    console.log('cloudBaseUrl', cloudBaseUrl);
+
+    const response = await fetch(`${homeBaseUrl}/ping`);
     const data = await response.json();
 
     expect(response.status).toBe(200);

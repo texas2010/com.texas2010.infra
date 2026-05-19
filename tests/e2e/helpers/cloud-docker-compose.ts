@@ -1,27 +1,21 @@
-import path from 'node:path';
-import getPort from 'get-port';
+import path from 'path';
 import { Wait } from 'testcontainers';
 import { startDockerCompose } from './docker-compose';
+import type { PlatformPorts } from './ports';
 
-export const startHomeDockerCompose = async () => {
-  const httpsPort = await getPort();
-
-  const httpPort = await getPort({
-    exclude: [httpsPort],
-  });
-
+export const startCloudDockerCompose = async (ports: PlatformPorts) => {
   const composeFilePath = path.resolve(process.cwd());
 
   const envObj = {
-    INFRA_LOCATION: 'home',
+    INFRA_LOCATION: 'cloud',
 
     DOCKER_ENV: 'test',
     DOCKER_RESTART: 'no',
 
     NODE_ENV: 'production',
 
-    HTTPS_PORT: httpsPort.toString(),
-    HTTP_PORT: httpPort.toString(),
+    HTTPS_PORT: ports.httpsPort.toString(),
+    HTTP_PORT: ports.httpPort.toString(),
 
     DOMAIN: 'localhost',
 
@@ -31,9 +25,9 @@ export const startHomeDockerCompose = async () => {
   const started = await startDockerCompose({
     composeFilePath,
     composeFile: 'docker-compose.yml',
-    projectName: 'home-test',
+    projectName: 'cloud-test',
     envObj,
-    profiles: ['home'],
+    profiles: ['cloud'],
     waitStrategies: {
       'caddy-1': Wait.forHealthCheck(),
       'api-1': Wait.forSuccessfulCommand(
