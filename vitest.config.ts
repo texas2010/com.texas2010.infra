@@ -4,6 +4,9 @@ export default defineConfig({
   test: {
     globals: true,
     isolate: false,
+    reporters: process.env.GITHUB_ACTIONS
+      ? ['tree', 'github-actions']
+      : ['tree'],
 
     projects: [
       {
