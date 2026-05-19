@@ -4,7 +4,16 @@
   "description": "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)",
   "main": "index.js",
   "scripts": {
-    "test:e2e": "vitest run --config vitest.e2e.config.ts"
+    "test": "npm run test:int && npm run test:e2e",
+    "test:watch": "vitest",
+    "test:int": "vitest run --project integration",
+    "test:int:watch": "vitest --project integration",
+    "test:int:debug": "ENABLE_TEST_LOGS=1 vitest run --project integration",
+    "test:int:watch:debug": "ENABLE_TEST_LOGS=1 vitest --project integration",
+    "test:e2e": "vitest run --project e2e",
+    "test:e2e:watch": "vitest --project e2e",
+    "test:e2e:debug": "ENABLE_TEST_LOGS=1 vitest run --project e2e",
+    "test:e2e:watch:debug": "ENABLE_TEST_LOGS=1 vitest --project e2e"
   },
   "repository": {
     "type": "git",
@@ -16,7 +25,11 @@
     "url": "https://github.com/texas2010/infra.texas2010.com/issues"
   },
   "homepage": "https://github.com/texas2010/infra.texas2010.com#readme",
-  "dependencies": {
-    "vitest": "^4.1.5"
+  "devDependencies": {
+    "@types/node": "^25.7.0",
+    "get-port": "^7.2.0",
+    "testcontainers": "^11.14.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.6"
   }
 }
