@@ -1,9 +1,8 @@
-import { describe, expect, inject, test } from 'vitest';
+import { describe, expect } from 'vitest';
+import { sharedPlatformTest } from '../../shared-platform-test';
 
 describe('Route ping', () => {
-  test('GET /ping - home only', async () => {
-    const baseUrl = inject('homeBaseUrl');
-
+  sharedPlatformTest('GET /ping', async ({ baseUrl }) => {
     const response = await fetch(`${baseUrl}/ping`);
     const data = await response.json();
 
