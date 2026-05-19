@@ -8,8 +8,6 @@ let cloud: Awaited<ReturnType<typeof startCloudDockerCompose>> | undefined;
 export async function setup(project: any) {
   const ports = await getE2EPorts();
 
-  console.log('getE2EPorts', ports);
-
   home = await startHomeDockerCompose(ports.home);
   cloud = await startCloudDockerCompose(ports.cloud);
 
