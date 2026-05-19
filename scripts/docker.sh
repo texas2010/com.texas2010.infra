@@ -97,6 +97,11 @@ fi
 full_project_name="${REPO_NAME}-${INFRA_LOCATION}-${DEPLOY_ENV}"
 env_file=".env.${INFRA_LOCATION}.${DEPLOY_ENV}"
 
+if [ ! -f "$env_file" ] && [ "$DEPLOY_ENV" != "test" ]; then
+  docker_error "Missing env file: $env_file"
+  exit 1
+fi
+
 if [ "$is_json_output" = false ]; then
   echo -e "${GREEN}Infrastructure Location:${RESET} $INFRA_LOCATION"
   echo -e "${GREEN}Deploy Environment:${RESET} $DEPLOY_ENV"
