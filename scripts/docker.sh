@@ -40,6 +40,37 @@ docker_compose() {
     "$@"
 }
 
+docker_check_running_services() {
+  local expected_services
+  local running_services
+  local missing_services=()
+
+  expected_services="$(docker_compose config --services)"
+  running_services="$(docker_compose ps --services --filter status=running)"
+
+  while IFS= read -r service; do
+    if [ -z "$service" ]; then
+      continue
+    fi
+
+    if ! echo "$running_services" | grep -qx "$service"; then
+      missing_services+=("$service")
+    fi
+  done <<< "$expected_services"
+
+  if [ "${#missing_services[@]}" -gt 0 ]; then
+    docker_error "Some expected services are not running:"
+
+    for service in "${missing_services[@]}"; do
+      docker_error "- $service"
+    done
+
+    return 1
+  fi
+
+  docker_success "All expected services are running."
+}
+
 command="${1:-}"
 
 if [ -z "$command" ]; then
@@ -114,6 +145,7 @@ case "$command" in
   up)
     docker_info "Starting containers..."
     docker_compose up -d
+    docker_check_running_services
     docker_success "Start containers complete."
     ;;
 
@@ -130,6 +162,7 @@ case "$command" in
     docker_success "Stop containers complete."
     docker_info "Starting containers..."
     docker_compose up -d
+    docker_check_running_services
     docker_success "Start containers complete."
     ;;
 
@@ -170,6 +203,7 @@ case "$command" in
     docker_info "Rebuilding images without cache..."
     docker_compose build --no-cache
     docker_compose up -d
+    docker_check_running_services
     docker_success "Rebuild complete."
     ;;
 
@@ -188,6 +222,7 @@ case "$command" in
     docker_success "Build complete."
     docker_info "Start containers..."
     docker_compose up -d
+    docker_check_running_services
     docker_success "Start containers complete."
     docker_success "Deploy complete."
     ;;
@@ -209,6 +244,7 @@ case "$command" in
 
     docker_info "Starting containers..."
     docker_compose up -d
+    docker_check_running_services
     docker_success "Start containers complete."
 
     docker_success "Update complete."
