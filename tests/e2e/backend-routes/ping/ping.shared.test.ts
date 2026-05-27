@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
 
-import { sharedPlatformTest } from '../../shared-platform-test';
+import { sharedPlatformSuite } from '../../shared-platform-suite';
 
-sharedPlatformTest('Route ping', ({ platform }) => {
+sharedPlatformSuite('Route ping', ({ platform }) => {
   test('GET /ping', async () => {
     const response = await fetch(`${platform.baseUrl}/ping`);
     const data = await response.json();

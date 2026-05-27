@@ -6,16 +6,16 @@ import {
   type Platform,
 } from './runtime/platform';
 
-export type InfraTestContext = {
+export type InfraSuiteContext = {
   platform: Platform;
 };
 
-export type InfraTestCallback = (context: InfraTestContext) => void;
+export type InfraSuiteCallback = (context: InfraSuiteContext) => void;
 
-export function infraTest(
+export function infraSuite(
   platformName: PlatformName,
   describeName: string,
-  callback: InfraTestCallback,
+  callback: InfraSuiteCallback,
 ) {
   describe(`${describeName} - ${platformName}`, () => {
     const platform = getPlatform(platformName);

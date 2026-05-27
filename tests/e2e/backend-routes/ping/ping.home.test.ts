@@ -1,8 +1,8 @@
 import { beforeAll, test, expect } from 'vitest';
 
-import { infraTest } from '../../infra-test';
+import { infraSuite } from '../../infra-suite';
 
-infraTest('home', 'Route ping', ({ platform }) => {
+infraSuite('home', 'Route ping', ({ platform }) => {
   beforeAll(() => {
     console.log('ping.home.test.ts BeforeAll', platform.name);
   });
