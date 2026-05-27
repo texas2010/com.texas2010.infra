@@ -1,10 +1,14 @@
-import { describe, expect, inject, test } from 'vitest';
+import { beforeAll, test, expect } from 'vitest';
 
-describe('Route ping', () => {
-  test('GET /ping - cloud only', async () => {
-    const baseUrl = inject('cloudBaseUrl');
+import { infraTest } from '../../infra-test';
 
-    const response = await fetch(`${baseUrl}/ping`);
+infraTest('cloud', 'Route ping', ({ platform }) => {
+  beforeAll(() => {
+    console.log('ping.cloud.test.ts BeforeAll', platform.name);
+  });
+
+  test('GET /ping', async () => {
+    const response = await fetch(`${platform.baseUrl}/ping`);
     const data = await response.json();
 
     expect(response.status).toBe(200);

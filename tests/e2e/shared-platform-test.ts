@@ -1,23 +1,20 @@
-import { inject, test } from 'vitest';
-import { sharedPlatforms } from './platforms';
+import { test } from 'vitest';
 
-type SharedPlatformTestCallback = (platform: {
-  name: string;
-  baseUrl: string;
+import { getPlatform, platformNames, type Platform } from './platform';
+
+type SharedPlatformTestCallback = (args: {
+  platform: Platform;
 }) => Promise<void>;
 
-export const sharedPlatformTest = (
+export function sharedPlatformTest(
   name: string,
   callback: SharedPlatformTestCallback
-) => {
-  for (const platform of sharedPlatforms) {
-    test(`${name} - ${platform.name}`, async () => {
-      const baseUrl = inject(platform.baseUrlKey);
+) {
+  for (const platformName of platformNames) {
+    test(`${name} - ${platformName}`, async () => {
+      const platform = getPlatform(platformName);
 
-      await callback({
-        name: platform.name,
-        baseUrl,
-      });
+      await callback({ platform });
     });
   }
-};
+}
