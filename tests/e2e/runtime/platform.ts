@@ -5,6 +5,7 @@ export type PlatformName = 'home' | 'cloud';
 export type Platform = {
   name: PlatformName;
   baseUrl: string;
+  projectName: 'home-test' | 'cloud-test';
 };
 
 export function getPlatform(name: PlatformName): Platform {
@@ -12,12 +13,14 @@ export function getPlatform(name: PlatformName): Platform {
     case 'home':
       return {
         name: 'home',
+        projectName: 'home-test',
         baseUrl: inject('homeBaseUrl'),
       };
 
     case 'cloud':
       return {
         name: 'cloud',
+        projectName: 'cloud-test',
         baseUrl: inject('cloudBaseUrl'),
       };
   }

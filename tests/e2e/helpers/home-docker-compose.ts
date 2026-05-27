@@ -3,6 +3,13 @@ import { Wait } from 'testcontainers';
 import { startDockerCompose } from './docker-compose';
 import type { PlatformPorts } from './ports';
 
+export const homeWaitStrategies = {
+  'caddy-1': Wait.forHealthCheck(),
+  'api-1': Wait.forSuccessfulCommand(
+    'curl -fsS http://localhost:3000/ >/dev/null',
+  ),
+};
+
 export const startHomeDockerCompose = async (ports: PlatformPorts) => {
   const composeFilePath = path.resolve(process.cwd());
 
@@ -28,12 +35,7 @@ export const startHomeDockerCompose = async (ports: PlatformPorts) => {
     projectName: 'home-test',
     envObj,
     profiles: ['home'],
-    waitStrategies: {
-      'caddy-1': Wait.forHealthCheck(),
-      'api-1': Wait.forSuccessfulCommand(
-        'curl -fsS http://localhost:3000/ >/dev/null'
-      ),
-    },
+    waitStrategies: homeWaitStrategies,
   });
 
   const caddyService = started.environment.getContainer('caddy-1');
