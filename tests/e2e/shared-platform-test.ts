@@ -1,20 +1,17 @@
-import { test } from 'vitest';
+import { platformNames, type Platform } from './runtime/platform';
+import { infraTest } from './infra-test';
 
-import { getPlatform, platformNames, type Platform } from './platform';
-
-type SharedPlatformTestCallback = (args: {
+type SharedPlatformTestContext = {
   platform: Platform;
-}) => Promise<void>;
+};
+
+type SharedPlatformTestCallback = (context: SharedPlatformTestContext) => void;
 
 export function sharedPlatformTest(
-  name: string,
-  callback: SharedPlatformTestCallback
+  describeName: string,
+  callback: SharedPlatformTestCallback,
 ) {
   for (const platformName of platformNames) {
-    test(`${name} - ${platformName}`, async () => {
-      const platform = getPlatform(platformName);
-
-      await callback({ platform });
-    });
+    infraTest(platformName, describeName, callback);
   }
 }
