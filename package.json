@@ -4,8 +4,10 @@
   "description": "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:int && npm run test:e2e",
+    "test": "npm run test:unit && npm run test:int && npm run test:e2e",
     "test:watch": "vitest",
+    "test:unit": "vitest run --project unit",
+    "test:unit:watch": "vitest --project unit",
     "test:int": "vitest run --project integration",
     "test:int:watch": "vitest --project integration",
     "test:int:debug": "ENABLE_TEST_LOGS=1 vitest run --project integration",
